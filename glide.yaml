@@ -1,0 +1,5 @@
+package: go-aerospike
+import:
+- package: github.com/aerospike/aerospike-client-go
+  version: ~1.25.1
+- package: github.com/yuin/gopher-lua

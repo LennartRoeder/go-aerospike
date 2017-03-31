@@ -1,0 +1,9 @@
+version: '2'
+services:
+  aerospike:
+    image: artifactory.mars.haw-hamburg.de:5000/aerospike/aerospike-server
+    ports:
+      - 3000:3000
+      - 3001:3001
+      - 3002:3002
+      - 3003:3003
