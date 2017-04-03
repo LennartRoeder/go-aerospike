@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 
+	"time"
+
 	as "github.com/aerospike/aerospike-client-go"
 )
 
@@ -12,19 +14,25 @@ func main() {
 		fmt.Println(err)
 	}
 
-	key, err := as.NewKey("namespace", "set",
-		"key value goes here and can be any supported primitive")
+	// Initialize policy.
+	policy := as.NewWritePolicy(0, 0)
+	policy.Timeout = 50 * time.Millisecond // 50 millisecond timeout.
 
-	bin1 := as.NewBin("bin1", "value1")
-	bin2 := as.NewBin("bin2", "value2")
+	// Write single value.
+	key, _ := as.NewKey("test", "myset", "mykey")
 
-	// Write a record
-	err = client.PutBins(nil, key, bin1, bin2)
+	// Write multiple values.
+	bin1 := as.NewBin("name", "John")
+	bin2 := as.NewBin("age", 25)
+
+	client.PutBins(nil, key, bin1, bin2)
 
 	// Read a record
 	record, err := client.Get(nil, key)
 
-	fmt.Println("records:", record)
+	for index, element := range record.Bins {
+		fmt.Println(index + ":", element)
+	}
 
 	client.Close()
 }
